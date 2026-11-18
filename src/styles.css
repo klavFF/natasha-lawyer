@@ -62,6 +62,8 @@ button {
   grid-template-columns: var(--side) minmax(0, 1fr);
   height: 100%;
   min-height: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   background:
     radial-gradient(1200px 500px at 80% -10%, rgba(212, 180, 131, 0.08), transparent 55%),
     var(--bg);
@@ -70,10 +72,12 @@ button {
 .main {
   height: 100%;
   min-width: 0;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .stage {
+  position: relative;
   min-height: 100%;
   min-width: 0;
   animation: rise 0.45s ease;
@@ -99,6 +103,34 @@ button {
   border-right: 1px solid var(--line);
   background: rgba(14, 13, 11, 0.72);
   backdrop-filter: blur(8px);
+}
+
+.mascot {
+  position: absolute;
+  right: 128px;
+  bottom: 8px;
+  width: 132px;
+  pointer-events: none;
+}
+
+.mascot-dog,
+.mascot-say {
+  mix-blend-mode: lighten;
+  user-select: none;
+}
+
+.mascot-dog {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mascot-say {
+  position: absolute;
+  width: 174%;
+  left: 42%;
+  top: -28%;
+  height: auto;
 }
 
 .side-nav {
@@ -129,13 +161,6 @@ button {
 .overview-link.is-active {
   background: rgba(212, 180, 131, 0.1);
   box-shadow: inset 2px 0 0 var(--brass);
-}
-
-.overview-count {
-  color: var(--muted);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .side-label {
@@ -208,53 +233,6 @@ button {
 .week-list li.is-active .week-quiz:hover,
 .week-quiz:hover {
   background: rgba(212, 180, 131, 0.16);
-}
-
-.side-spine {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin: 28px 12px 8px;
-  color: rgba(212, 180, 131, 0.72);
-  font-family: var(--serif);
-  font-size: 13px;
-  letter-spacing: 0.16em;
-}
-
-.side-spine i {
-  display: block;
-  width: 1px;
-  flex: 1;
-  min-height: 40px;
-  margin-left: 7px;
-  background: linear-gradient(var(--brass), rgba(212, 180, 131, 0));
-}
-
-.side-foot {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 16px;
-  padding: 16px 8px 0;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.side-foot small {
-  display: block;
-  margin-top: 3px;
-  color: #7d766b;
-  font-size: 12px;
-}
-
-.side-foot-num {
-  font-family: var(--serif);
-  font-size: 32px;
-  color: var(--brass);
-  line-height: 1;
 }
 
 .overview {
@@ -373,26 +351,6 @@ button {
   letter-spacing: -0.03em;
 }
 
-.card-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 18px;
-  color: #8f877b;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.card-status::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-}
-
 .card-actions {
   display: flex;
   gap: 8px;
@@ -411,25 +369,6 @@ button {
 
 .card-actions button:hover {
   border-bottom-color: var(--brass);
-}
-
-.colophon {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  margin-top: 28px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 14px;
-  letter-spacing: 0.04em;
-}
-
-.colophon i {
-  margin-right: 8px;
-  color: var(--brass);
-  font-family: var(--serif);
-  font-style: italic;
 }
 
 .sheet {
@@ -456,6 +395,10 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+
+.sheet-sticky {
+  display: contents;
 }
 
 .sheet-head {
@@ -515,24 +458,30 @@ button {
   padding: 0;
 }
 
-.toc a {
+.toc-link {
   display: flex;
+  width: 100%;
   gap: 10px;
   padding: 9px 0;
   color: var(--ink);
+  text-align: left;
   text-decoration: none;
   font-size: 14px;
   line-height: 1.35;
   border-top: 1px solid rgba(28, 25, 21, 0.08);
 }
 
-.toc a span {
+.toc-link span {
   font-family: var(--serif);
   color: var(--brass-deep);
 }
 
-.toc a:hover {
+.toc-link:hover {
   color: var(--brass-deep);
+}
+
+.toc-toggle {
+  display: none;
 }
 
 .article {
@@ -556,6 +505,7 @@ button {
   gap: 8px;
   padding: 28px 0;
   border-top: 1px solid rgba(28, 25, 21, 0.12);
+  scroll-margin-top: 20px;
 }
 
 .block-index {
@@ -592,6 +542,13 @@ button {
 
 .block li + li {
   margin-top: 10px;
+}
+
+.article-no {
+  color: var(--brass-deep);
+  font-family: var(--serif);
+  font-weight: 600;
+  font-variant-numeric: lining-nums;
 }
 
 .block p + p {
@@ -1007,8 +964,34 @@ button {
     gap: 0 18px;
   }
 
-  .toc a {
+  .toc a,
+  .toc-link {
     border-top: 0;
+  }
+
+  .toc.is-collapsed {
+    padding-top: 14px;
+    padding-bottom: 4px;
+  }
+
+  .toc-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    color: var(--brass-deep);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .toc-toggle span {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
   }
 
   .sources {
@@ -1027,10 +1010,15 @@ button {
 }
 
 @media (max-width: 860px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   .shell {
     grid-template-columns: minmax(0, 1fr);
     height: auto;
-    overflow-x: hidden;
+    overflow: visible;
   }
 
   .sidebar {
@@ -1038,6 +1026,24 @@ button {
     border-right: 0;
     border-bottom: 1px solid var(--line);
     background: #141310;
+  }
+
+  .mascot {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 220px;
+    margin: 72px auto 0;
+  }
+
+  .mascot-dog {
+    width: 108px;
+  }
+
+  .mascot-say {
+    width: 188px;
+    left: 46px;
+    top: -42px;
   }
 
   .week-list {
@@ -1053,11 +1059,6 @@ button {
   .week-list li {
     min-width: 230px;
     background: rgba(255, 255, 255, 0.03);
-  }
-
-  .side-spine,
-  .side-foot {
-    display: none;
   }
 
   .main {
@@ -1105,8 +1106,39 @@ button {
     padding-right: 0;
   }
 
+  .sheet-sticky {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: var(--cream);
+    box-shadow: 0 1px 0 rgba(28, 25, 21, 0.1);
+    transition: transform 0.22s ease;
+  }
+
+  .sheet-sticky.is-away {
+    transform: translateY(-100%);
+    pointer-events: none;
+  }
+
+  .sheet-sticky .sheet-head {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .sheet-sticky .toc ol {
+    max-height: 42vh;
+    overflow: auto;
+  }
+
   .article {
-    padding: 28px 22px 48px;
+    padding: 24px 16px 40px;
+  }
+
+  .block {
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 4px;
+    padding: 22px 0;
   }
 
   .sheet-center {
@@ -1147,21 +1179,38 @@ button {
   }
 
   .cards,
-  .stats,
-  .colophon {
+  .stats {
     grid-template-columns: 1fr;
     display: grid;
   }
 
-  .colophon {
-    gap: 10px;
+  .card {
+    min-height: 196px;
+  }
+
+  .card-open {
+    padding: 16px 18px 4px;
+  }
+
+  .card-num {
+    font-size: 52px;
+  }
+
+  .card-title {
+    margin-top: 14px;
+    font-size: 20px;
+  }
+
+  .card-actions {
+    padding: 0 18px 14px;
   }
 
   .toc ol {
     display: block;
   }
 
-  .toc a {
+  .toc a,
+  .toc-link {
     border-top: 1px solid rgba(28, 25, 21, 0.08);
   }
 
@@ -1179,7 +1228,8 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
   .stage,
-  .card {
+  .card,
+  .sheet-sticky {
     animation: none;
     transition: none;
   }

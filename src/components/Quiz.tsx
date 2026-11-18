@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { chapterFor } from '../content'
-import { pad, type Week } from '../model'
+import { type Week } from '../model'
 import { LiveQuiz } from './LiveQuiz'
 import { ModeSwitch } from './ModeSwitch'
 
@@ -15,12 +15,7 @@ export function Quiz(props: QuizProps) {
   const chapter = chapterFor(props.week.id)
   if (chapter) {
     return (
-      <LiveQuiz
-        week={props.week}
-        chapter={chapter}
-        onOverview={props.onOverview}
-        onNotes={props.onNotes}
-      />
+      <LiveQuiz chapter={chapter} onOverview={props.onOverview} onNotes={props.onNotes} />
     )
   }
   return <MockQuiz {...props} />
@@ -29,7 +24,7 @@ export function Quiz(props: QuizProps) {
 const letters = ['А', 'Б', 'В', 'Г']
 const widths = ['78%', '52%', '66%', '44%']
 
-function MockQuiz({ week, initialScreen, onOverview, onNotes }: QuizProps) {
+function MockQuiz({ initialScreen, onOverview, onNotes }: QuizProps) {
   const [screen, setScreen] = useState<'question' | 'result'>(initialScreen)
   const [selected, setSelected] = useState<number | null>(null)
 
@@ -37,9 +32,9 @@ function MockQuiz({ week, initialScreen, onOverview, onNotes }: QuizProps) {
     <div className="quiz">
       <header className="quiz-top">
         <button type="button" className="back dark" onClick={onOverview}>
-          Обзор
+          Главная
         </button>
-        <span className="quiz-kicker">Неделя {pad(week.n)} · тема не назначена</span>
+        <span className="quiz-kicker">Тема не назначена</span>
         <ModeSwitch mode="quiz" tone="dark" onNotes={onNotes} onQuiz={() => undefined} />
       </header>
 
@@ -106,7 +101,7 @@ function MockQuiz({ week, initialScreen, onOverview, onNotes }: QuizProps) {
               <button type="button" className="btn" disabled>
                 Проверить
               </button>
-              <p>Проверка включится, когда у недели появятся вопросы.</p>
+              <p>Проверка включится, когда у темы появятся вопросы.</p>
             </div>
           </section>
         ) : (
@@ -121,7 +116,7 @@ function MockQuiz({ week, initialScreen, onOverview, onNotes }: QuizProps) {
                 <h1>Результат появится после попытки</h1>
                 <p className="q-lead ink-lead">
                   Счёт, список ошибок и повтор только по ним. Сейчас показывать нечего: вопросов по
-                  неделе ещё нет.
+                  теме ещё нет.
                 </p>
               </div>
             </div>

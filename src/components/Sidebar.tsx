@@ -1,4 +1,4 @@
-import { chapterFor, readyChapterCount } from '../content'
+import { chapterFor } from '../content'
 import { pad, weeks, type View } from '../model'
 
 type SidebarProps = {
@@ -19,11 +19,10 @@ export function Sidebar({ view, weekId, onOverview, onNotes, onQuiz }: SidebarPr
           aria-current={view === 'overview' ? 'page' : undefined}
           onClick={onOverview}
         >
-          <span>Обзор</span>
-          <span className="overview-count">6 недель</span>
+          <span>Главная</span>
         </button>
 
-        <p className="side-label">Недели</p>
+        <p className="side-label">Темы</p>
         <ul className="week-list">
           {weeks.map((week) => {
             const active = week.id === weekId && view !== 'overview'
@@ -45,20 +44,6 @@ export function Sidebar({ view, weekId, onOverview, onNotes, onQuiz }: SidebarPr
           })}
         </ul>
       </nav>
-
-      <div className="side-spine" aria-hidden="true">
-        <span>01</span>
-        <i />
-        <span>06</span>
-      </div>
-
-      <footer className="side-foot">
-        <span className="side-foot-num">{readyChapterCount()}</span>
-        <span>
-          {readyChapterCount() === 1 ? 'тема с конспектом' : 'тем с конспектом'}
-          <small>кодексы Беларуси — по неделям</small>
-        </span>
-      </footer>
     </aside>
   )
 }

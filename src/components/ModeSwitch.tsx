@@ -7,7 +7,7 @@ type ModeSwitchProps = {
 
 export function ModeSwitch({ mode, tone, onNotes, onQuiz }: ModeSwitchProps) {
   return (
-    <div className={`switch switch-${tone}`} role="tablist" aria-label="Режим недели">
+    <div className={`switch switch-${tone}`} role="tablist" aria-label="Режим">
       <button
         type="button"
         role="tab"

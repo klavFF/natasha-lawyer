@@ -9,7 +9,7 @@ type OverviewProps = {
 export function Overview({ onNotes, onQuiz }: OverviewProps) {
   return (
     <div className="overview">
-      <section className="cards" aria-label="Недели программы">
+      <section className="cards" aria-label="Темы">
         {weeks.map((week) => {
           const chapter = chapterFor(week.id)
           return (
@@ -17,7 +17,6 @@ export function Overview({ onNotes, onQuiz }: OverviewProps) {
             <button type="button" className="card-open" onClick={() => onNotes(week.id)}>
               <span className="card-num">{pad(week.n)}</span>
               <span className="card-title">{chapter?.title ?? 'Тема не назначена'}</span>
-              <span className="card-status">{chapter ? 'Конспект готов' : 'Ожидает материалы'}</span>
             </button>
             <div className="card-actions">
               <button type="button" onClick={() => onNotes(week.id)}>
@@ -31,18 +30,10 @@ export function Overview({ onNotes, onQuiz }: OverviewProps) {
           )
         })}
       </section>
-
-      <footer className="colophon">
-        <span>
-          <i>01</i> Конспект
-        </span>
-        <span>
-          <i>02</i> Тренировка
-        </span>
-        <span>
-          <i>03</i> Проверка
-        </span>
-      </footer>
+      <div className="mascot">
+        <img className="mascot-say" src={`${import.meta.env.BASE_URL}oga-say.png`} alt="У тебя всё получится" />
+        <img className="mascot-dog" src={`${import.meta.env.BASE_URL}oga-study.png`} alt="" />
+      </div>
     </div>
   )
 }

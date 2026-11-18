@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import type { StudyChapter, StudyQuestion } from '../content/types'
-import { pad, type Week } from '../model'
+import { pad } from '../model'
 import { ModeSwitch } from './ModeSwitch'
 
 type LiveQuizProps = {
-  week: Week
   chapter: StudyChapter
   onOverview: () => void
   onNotes: () => void
@@ -18,7 +17,7 @@ type Attempt = {
 
 const letters = ['А', 'Б', 'В', 'Г']
 
-export function LiveQuiz({ week, chapter, onOverview, onNotes }: LiveQuizProps) {
+export function LiveQuiz({ chapter, onOverview, onNotes }: LiveQuizProps) {
   const [queue, setQueue] = useState<StudyQuestion[]>(chapter.questions)
   const [step, setStep] = useState(0)
   const [picked, setPicked] = useState<number | null>(null)
@@ -67,11 +66,9 @@ export function LiveQuiz({ week, chapter, onOverview, onNotes }: LiveQuizProps) 
     <div className="quiz">
       <header className="quiz-top">
         <button type="button" className="back dark" onClick={onOverview}>
-          Обзор
+          Главная
         </button>
-        <span className="quiz-kicker">
-          Неделя {pad(week.n)} · {chapter.title}
-        </span>
+        <span className="quiz-kicker">{chapter.title}</span>
         <ModeSwitch mode="quiz" tone="dark" onNotes={onNotes} onQuiz={() => undefined} />
       </header>
 
