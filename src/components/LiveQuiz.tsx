@@ -17,8 +17,23 @@ type Attempt = {
 
 const letters = ['А', 'Б', 'В', 'Г']
 
+function shuffleChoices(question: StudyQuestion): StudyQuestion {
+  const order = question.choices.map((_, index) => index)
+  for (let index = order.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(Math.random() * (index + 1))
+    const current = order[index]
+    order[index] = order[swap]
+    order[swap] = current
+  }
+  return {
+    ...question,
+    choices: order.map((index) => question.choices[index]) as StudyQuestion['choices'],
+    answer: order.indexOf(question.answer) as StudyQuestion['answer'],
+  }
+}
+
 export function LiveQuiz({ chapter, onOverview, onNotes }: LiveQuizProps) {
-  const [queue, setQueue] = useState<StudyQuestion[]>(chapter.questions)
+  const [queue, setQueue] = useState(() => chapter.questions.map(shuffleChoices))
   const [step, setStep] = useState(0)
   const [picked, setPicked] = useState<number | null>(null)
   const [revealed, setRevealed] = useState(false)
@@ -31,10 +46,10 @@ export function LiveQuiz({ chapter, onOverview, onNotes }: LiveQuizProps) {
 
   function restart(onlyWrong: boolean) {
     const wrongIds = new Set(wrong.map((item) => item.id))
-    const nextQueue = onlyWrong
+    const source = onlyWrong
       ? chapter.questions.filter((item) => wrongIds.has(item.id))
       : chapter.questions
-    setQueue(nextQueue)
+    setQueue(source.map(shuffleChoices))
     setStep(0)
     setPicked(null)
     setRevealed(false)
@@ -78,7 +93,7 @@ export function LiveQuiz({ chapter, onOverview, onNotes }: LiveQuizProps) {
             total={log.length}
             correctCount={correctCount}
             wrong={wrong}
-            questions={chapter.questions}
+            questions={queue}
             onRetry={() => restart(false)}
             onWrong={() => restart(true)}
           />
