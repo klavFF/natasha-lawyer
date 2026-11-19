@@ -1,9 +1,9 @@
-import { chapterFor } from '../content'
+import { materialsFor } from '../content'
 import { pad, weeks } from '../model'
 
 type OverviewProps = {
-  onNotes: (id: string) => void
-  onQuiz: (id: string) => void
+  onNotes: (id: string, materialId?: string) => void
+  onQuiz: (id: string, materialId?: string) => void
 }
 
 export function Overview({ onNotes, onQuiz }: OverviewProps) {
@@ -11,22 +11,46 @@ export function Overview({ onNotes, onQuiz }: OverviewProps) {
     <div className="overview">
       <section className="cards" aria-label="Темы">
         {weeks.map((week) => {
-          const chapter = chapterFor(week.id)
+          const materials = materialsFor(week.id)
+          const title = week.title ?? materials[0]?.title ?? 'Тема не назначена'
+          if (materials.length > 1) {
+            return (
+              <article key={week.id} className="card card-stack">
+                <div className="card-open">
+                  <span className="card-num">{pad(week.n)}</span>
+                  <span className="card-title">{title}</span>
+                </div>
+                <ul className="card-materials">
+                  {materials.map((material) => (
+                    <li key={material.id} className="card-material">
+                      <span>{material.title}</span>
+                      <button type="button" onClick={() => onNotes(week.id, material.id)}>
+                        Конспект
+                      </button>
+                      <button type="button" onClick={() => onQuiz(week.id, material.id)}>
+                        Тест
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            )
+          }
           return (
-          <article key={week.id} className="card">
-            <button type="button" className="card-open" onClick={() => onNotes(week.id)}>
-              <span className="card-num">{pad(week.n)}</span>
-              <span className="card-title">{chapter?.title ?? 'Тема не назначена'}</span>
-            </button>
-            <div className="card-actions">
-              <button type="button" onClick={() => onNotes(week.id)}>
-                Конспект
+            <article key={week.id} className="card">
+              <button type="button" className="card-open" onClick={() => onNotes(week.id)}>
+                <span className="card-num">{pad(week.n)}</span>
+                <span className="card-title">{title}</span>
               </button>
-              <button type="button" onClick={() => onQuiz(week.id)}>
-                Тест
-              </button>
-            </div>
-          </article>
+              <div className="card-actions">
+                <button type="button" onClick={() => onNotes(week.id)}>
+                  Конспект
+                </button>
+                <button type="button" onClick={() => onQuiz(week.id)}>
+                  Тест
+                </button>
+              </div>
+            </article>
           )
         })}
       </section>

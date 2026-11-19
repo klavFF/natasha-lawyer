@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { chapterFor } from '../content'
+import { materialFor } from '../content'
 import { noteSections, pad, type Week } from '../model'
 import { ModeSwitch } from './ModeSwitch'
 
 type NotesProps = {
   week: Week
+  materialId?: string
   onOverview: () => void
   onQuiz: () => void
 }
@@ -51,8 +52,8 @@ function withArticles(text: string) {
   return nodes
 }
 
-export function Notes({ week, onOverview, onQuiz }: NotesProps) {
-  const chapter = chapterFor(week.id)
+export function Notes({ week, materialId, onOverview, onQuiz }: NotesProps) {
+  const chapter = materialFor(week.id, materialId)
   const sections = chapter?.sections ?? noteSections.map((section) => ({
     id: section.id,
     title: section.title,

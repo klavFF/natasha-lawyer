@@ -3,6 +3,7 @@ export type View = 'overview' | 'notes' | 'quiz'
 export type Week = {
   id: string
   n: number
+  title?: string
 }
 
 export type NoteSection = {
@@ -12,7 +13,7 @@ export type NoteSection = {
 }
 
 export const weeks: Week[] = [
-  { id: 'week-01', n: 1 },
+  { id: 'week-01', n: 1, title: 'Купля-продажа' },
   { id: 'week-02', n: 2 },
   { id: 'week-03', n: 3 },
   { id: 'week-04', n: 4 },

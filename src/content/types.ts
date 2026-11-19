@@ -14,6 +14,7 @@ export type StudyQuestion = {
 }
 
 export type StudyChapter = {
+  id: string
   weekId: string
   title: string
   deck: string

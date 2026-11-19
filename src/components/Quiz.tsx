@@ -1,18 +1,19 @@
 import { useState } from 'react'
-import { chapterFor } from '../content'
+import { materialFor } from '../content'
 import { type Week } from '../model'
 import { LiveQuiz } from './LiveQuiz'
 import { ModeSwitch } from './ModeSwitch'
 
 type QuizProps = {
   week: Week
+  materialId?: string
   initialScreen: 'question' | 'result'
   onOverview: () => void
   onNotes: () => void
 }
 
 export function Quiz(props: QuizProps) {
-  const chapter = chapterFor(props.week.id)
+  const chapter = materialFor(props.week.id, props.materialId)
   if (chapter) {
     return (
       <LiveQuiz chapter={chapter} onOverview={props.onOverview} onNotes={props.onNotes} />
