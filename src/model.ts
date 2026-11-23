@@ -14,7 +14,7 @@ export type NoteSection = {
 
 export const weeks: Week[] = [
   { id: 'week-01', n: 1, title: 'Купля-продажа' },
-  { id: 'week-02', n: 2 },
+  { id: 'week-02', n: 2, title: 'Аренда' },
   { id: 'week-03', n: 3 },
   { id: 'week-04', n: 4 },
   { id: 'week-05', n: 5 },
